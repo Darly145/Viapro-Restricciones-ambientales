@@ -1,0 +1,7 @@
+streamlit>=1.36
+geopandas>=1.0
+pyogrio
+shapely>=2.0
+folium
+streamlit-folium
+pandas
