@@ -32,15 +32,7 @@ streamlit run app.py
 ```
 Abra http://localhost:8501 y pruebe con `ejemplo_area_estudio.kmz`.
 
-## 3. Publicar gratis (Streamlit Community Cloud)
-1. Suba esta carpeta a un repositorio de GitHub (puede ser privado).
-2. Entre a https://share.streamlit.io con su cuenta de GitHub.
-3. "New app" → elija el repositorio → archivo principal `app.py` → Deploy.
-4. Comparta el enlace con su equipo. Para actualizar una capa, reemplace el
-   archivo en `capas/` en GitHub y la app se redespliega sola.
 
-> Nota: si el total de capas supera ~1 GB, considere GeoPackage por capa,
-> simplificar geometrías o partir capas nacionales por departamento.
 
 ## Notas técnicas
 - Áreas calculadas en EPSG:9377 (MAGNA-SIRGAS / Origen Nacional), en hectáreas.
