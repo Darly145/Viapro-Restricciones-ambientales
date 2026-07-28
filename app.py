@@ -62,7 +62,7 @@ st.markdown(
       background-color: #2B2C36 !important;
       }}
       div[data-testid="stFileUploader"] section * {{
-      color: #E8F0E8 !important;
+      color: #C55A11 !important;
       }}
     </style>
     """,
