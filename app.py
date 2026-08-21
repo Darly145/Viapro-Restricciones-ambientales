@@ -28,7 +28,7 @@ CREMA = "#FAFAF7"
 
 PALETA_CAPAS = [
     "#C0392B", "#E67E22", "#8E44AD", "#2980B9", "#16A085",
-    "#D4AC0D", "#7B241C", "#1F618D", "#6C3483", "#117A65",
+    "#D4AC0D", "#7B241C", "#1F618D", "#6C3483", "#FFFF00",
 ]
 
 st.set_page_config(
@@ -191,8 +191,12 @@ def construir_mapa(area, capas, intersecciones):
     # Capas ambientales completas (contexto, apagadas por defecto)
     for i, (nombre, capa) in enumerate(capas.items()):
         color = PALETA_CAPAS[i % len(PALETA_CAPAS)]
+        campos = [c for c in capa.columns if c != capa.geometry.name][:8]
+        popup = folium.GeoJsonPopup(fields=campos, aliases=[f"{c}:" for c in campos]) if campos else None
+        tooltip = folium.GeoJsonTooltip(fields=campos[:1]) if campos else None
         folium.GeoJson(
             capa.to_json(), name=f"Capa: {nombre}", show=False,
+            popup=popup, tooltip=tooltip,
             style_function=lambda _, c=color: {
                 "color": c, "weight": 1, "fillColor": c, "fillOpacity": 0.15},
         ).add_to(m)
@@ -200,11 +204,13 @@ def construir_mapa(area, capas, intersecciones):
     # Intersecciones (encendidas)
     for i, (nombre, inter) in enumerate(intersecciones.items()):
         color = PALETA_CAPAS[i % len(PALETA_CAPAS)]
+        campos = [c for c in inter.columns if c != inter.geometry.name][:8]
+        popup = folium.GeoJsonPopup(fields=campos, aliases=[f"{c}:" for c in campos]) if campos else None
         folium.GeoJson(
             inter.to_json(), name=f"⚠️ Cruce: {nombre}",
+            popup=popup, tooltip=nombre,
             style_function=lambda _, c=color: {
                 "color": c, "weight": 2, "fillColor": c, "fillOpacity": 0.55},
-            tooltip=nombre,
         ).add_to(m)
 
     # Área de estudio encima
@@ -274,11 +280,14 @@ else:
 
         st.subheader("Resultados de la revisión")
         st.dataframe(tabla, use_container_width=True, hide_index=True)
+        buffer_excel = io.BytesIO()
+        with pd.ExcelWriter(buffer_excel, engine="openpyxl") as writer:
+            tabla.to_excel(writer, index=False, sheet_name="Revisión")
         st.download_button(
-            "⬇️ Descargar resultados (CSV)",
-            tabla.to_csv(index=False).encode("utf-8-sig"),
-            file_name="revision_restricciones.csv",
-            mime="text/csv",
+            "⬇️ Descargar resultados (Excel)",
+            buffer_excel.getvalue(),
+            file_name="revision_restricciones.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         )
 
         st.subheader("Visor")
