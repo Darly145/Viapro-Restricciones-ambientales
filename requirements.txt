@@ -5,3 +5,4 @@ shapely>=2.0
 folium
 streamlit-folium
 pandas
+openpyxl
