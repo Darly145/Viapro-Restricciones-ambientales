@@ -217,7 +217,7 @@ def construir_mapa(area, capas, intersecciones):
     folium.GeoJson(
         area.to_json(), name="Área de estudio",
         style_function=lambda _: {
-            "color": VERDE_OSCURO, "weight": 3, "fillOpacity": 0.05, "dashArray": "6 4"},
+            "color": "#FFFF00", "weight": 3, "fillOpacity": 0.05, "dashArray": "6 4"},
     ).add_to(m)
 
     folium.LayerControl(collapsed=False).add_to(m)
