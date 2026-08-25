@@ -182,11 +182,11 @@ def analizar(area: gpd.GeoDataFrame, capas: dict):
 def construir_mapa(area, capas, intersecciones):
     centro = area.geometry.union_all().centroid
     m = folium.Map(location=[centro.y, centro.x], zoom_start=12, tiles=None)
-    folium.TileLayer("OpenStreetMap", name="Mapa base").add_to(m)
     folium.TileLayer(
         "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
         attr="Esri", name="Imagen satelital",
     ).add_to(m)
+    folium.TileLayer("OpenStreetMap", name="Mapa base").add_to(m)
 
     # Capas ambientales completas (contexto, apagadas por defecto)
     for i, (nombre, capa) in enumerate(capas.items()):
